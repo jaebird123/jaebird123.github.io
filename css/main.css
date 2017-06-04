@@ -102,6 +102,10 @@
     text-decoration: none;
 }
 
+.sidebar-nav li a.active {
+    background: rgba(255,255,255,0.2);
+}
+
 .sidebar-nav li a > span > i {
     margin-right: 5px;
 }
@@ -236,6 +240,15 @@
 }
 
 /* Navigation Icon (end) */
+
+/* * * * * * * * * * * * * * * *
+ *   P A G E   C O N T E N T   *
+ * * * * * * * * * * * * * * * */
+
+#page-content-wrapper h3 {
+    border-bottom: 1px solid #424242;
+    padding-bottom: 5px;
+}
 
 @media(min-width:768px) {
     #wrapper {
