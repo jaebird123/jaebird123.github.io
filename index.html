@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Jesse Eaton</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -18,14 +18,7 @@
     <link href = "css/font-awesome.min.css" rel = "stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/simple-sidebar.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link href="css/main.css" rel="stylesheet">
 
 </head>
 
@@ -37,7 +30,7 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <span>Jesse Eaton</span>
+                    <span>Jump to...</span>
                 </li>
                 <li>
                     <a href="#">
@@ -54,6 +47,11 @@
                         <span><i class="fa fa-book fa-fw"></i>Library</span>
                     </a>
                 </li>
+                <li>
+                    <a href = "#">
+                        <span><i class="fa fa-address-card fa-fw" aria-hidden="true"></i>Contact Info</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -61,9 +59,16 @@
         <!-- Page Content -->
         <div id = 'topnav'>
             <a href="#menu-toggle" id="menu-toggle">
-                <i class = "fa fa-bars fa-2x" aria-hidden = "true"></i>
+            <div id = "nav-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
             </a>
-            <div>JesseEaton.com</div>
+            <!-- <a href="#menu-toggle" id="menu-toggle">
+                <i class = "fa fa-bars fa-2x" aria-hidden = "true"></i>
+            </a> -->
+            <div id = 'topnav-text'>> about_me</div>
         </div>
         <div id="page-content-wrapper">
             <div class="container-fluid">
@@ -102,6 +107,12 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+
+    <!-- Typed Javascript (for slow typing animation) -->
+    <script src = "js/typed.min.js"></script>
+
+    <!-- Custom Javascript -->
+    <script src = "js/main.js"></script>
 
     <!-- Menu Toggle Script -->
     <script>
