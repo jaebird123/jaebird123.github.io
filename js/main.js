@@ -11,6 +11,10 @@ $(document).ready(function(){
     strings: ["> exact_me", "> about_me"],
     typeSpeed: 60
   });
+  Typed.new('#topnav-text', {
+    strings: ["> nǐ hǎo, shìjiè", "> hola mundo", "> hello world"],
+    typeSpeed: 30
+  });
   // Typed.new('#topnav-text', {
   //   strings: ["> research"],
   //   typeSpeed: 60
