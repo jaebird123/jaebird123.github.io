@@ -18,6 +18,10 @@
   margin-top: 20px;
  }
 
+ .row.vert-space {
+  padding-top: 10px;
+ }
+
 /* Toggle Styles */
 
 #wrapper {
