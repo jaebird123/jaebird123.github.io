@@ -8,17 +8,9 @@ $(document).ready(function(){
 
   /* type slowly */
   Typed.new('#topnav-text', {
-    strings: ["> exact_me", "> about_me"],
-    typeSpeed: 60
-  });
-  Typed.new('#topnav-text', {
     strings: ["> nǐ hǎo, shìjiè", "> hola mundo", "> hello world"],
     typeSpeed: 30
   });
-  // Typed.new('#topnav-text', {
-  //   strings: ["> research"],
-  //   typeSpeed: 60
-  // });
 });
 
 function toggleSideBar(e) {
@@ -35,30 +27,80 @@ function smoothScroll(e) {
   e.preventDefault();
   $(document).off("scroll");
 
-  $('a').each(function () {
-    $(this).removeClass('active');
-  })
-  $(this).addClass('active');
-
   var target = this.hash,
       menu = target;
   $target = $(target);
+
+  var tgtDistToParent = $target.offset().top - $target.parent().offset().top - $target.parent().scrollTop();
+  wrapperPadding = parseInt($target.parent().parent().css('padding-top'), 10);
+  tgtDistToParent += wrapperPadding;
+
   $('#page-content-wrapper').stop().animate({
-    'scrollTop': $target.offset().top - 0
+    'scrollTop': tgtDistToParent
   }, 500, 'swing', function () {
-    window.location.hash = target;
     $(document).on("scroll", onScroll);
+  });
+  
+  /* set top nav text */
+  setTopNavText($(this), {
+    'about': ['> ./analyzeJesse', '> found about_me.txt'],
+    'research': ['> searching...', '> reasearching...'],
+    'library': ['> don\'t read the book', '> learn formulas'],
+    'contact-info': ['> hmu']
   });
 }
 
-function onScroll(event){
+function onScroll(event) {
+  linksStr = ".sidebar-nav > li > a"
   var scrollPos = $(this).scrollTop();
-  $('.sidebar-nav > li > a').each(function () {
-    var currLink = $(this);
-    var refElement = $(currLink.attr("href"));
-    if (refElement.position().top <= scrollPos + 0 && refElement.position().top + refElement.height() > scrollPos) {
-      $('.sidebar-nav > li > a').removeClass("active");
-      currLink.addClass("active");
+
+  /* only add active to current link */
+  $(linksStr).removeClass("active");
+  curPageLink = getCurPageLink(linksStr);
+  curPageLink.addClass("active");
+}
+
+function setTopNavText(curPageLink, txtDict) {
+  key = curPageLink.attr("href").substring(1);
+  Typed.new('#topnav-text', {
+    strings: txtDict[key],
+    typeSpeed: 60
+  });
+}
+
+/* returns the html element that the page is currently scrolled to */
+function getCurPageLink(linksStr) {
+  pageElem = null;
+  pageLink = null;
+  $(linksStr).each(function () {
+    var curLink = $(this);
+    var refElem = $(curLink.attr("href"));
+    if (pageElem == null) {
+      pageElem = refElem;
+      pageLink = curLink;
+    } else {
+      if (firstIsNegAndCloserToZero(refElem, pageElem)) {
+        pageElem = refElem;
+        pageLink = curLink;
+      }
     }
   });
+  return pageLink
+}
+
+/* returns the element whose position is negative (above the screen) and closest to zero */
+/* now just returns bool */
+function firstIsNegAndCloserToZero(elem1, elem2) {
+  dist1 = elem1.position().top;
+  dist2 = elem2.position().top;
+  if (dist1 < 0 && dist2 > 0) {
+    return true
+  }
+  if (dist1 > 0 && dist2 < 0) {
+    return false
+  }
+  if (Math.abs(dist1) < Math.abs(dist2)) { /* elem1 is closer */
+    return true
+  }
+  return false
 }
