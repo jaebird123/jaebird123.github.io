@@ -40,9 +40,9 @@ function draw_header(ctx, numYears, numDays, s3, h, w) {
     s2 += "s"
   }
   var x = w / 2;
-  var y1 = 100;
-  var y2 = 135;
-  var y3 = 175;
+  var y1 = 75;
+  var y2 = 110;
+  var y3 = 150;
   ctx.font = "50px Verdana";
   ctx.textAlign = 'center';
   ctx.fillStyle = 'white';
@@ -56,8 +56,8 @@ function draw_header(ctx, numYears, numDays, s3, h, w) {
 function draw_main_text(ctx, h, w) {
   var x = w / 2;
   var maxW = w - 100;
-  var lineHeight = 50;
-  var y = 250;
+  var lineHeight = 42;
+  var y = 200;
   ctx.font = "20px Verdana";
   ctx.textAlign = 'center';
   ctx.fillStyle = 'black';
