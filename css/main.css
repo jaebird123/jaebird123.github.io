@@ -9,8 +9,8 @@
  }
 
  #jesse {
-    width: 150px;
-    padding-bottom: 15px;
+    width: 200px;
+    margin-bottom: 15px;
  }
 
  .smallest-title {
@@ -411,6 +411,10 @@
 
 .timeline-badge.red {
   background-color: #D32F2F !important;
+}
+
+.timeline-badge.turquoise {
+    background-color: #16a085 !important;
 }
 
 .timeline-title {
