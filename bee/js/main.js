@@ -16,9 +16,16 @@ $( document ).ready(function() {
   var bee = $("#bee");
   print(bee)
   bee.css({
-    left: w/2 - bee.width()/2+'px',
+    left: w/2 - bee.width()/2 - 50 + 'px',
     bottom: 25 + 'px'
-    // bee.position().top+
+  });
+
+  // position bird
+  var bird = $("#bird");
+  print(bird)
+  bird.css({
+    left: w/2 - bird.width()/2 + 50 + 'px',
+    bottom: 25 + 'px'
   });
 });
 

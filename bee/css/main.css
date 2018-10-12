@@ -14,7 +14,7 @@ body, html { height:100%; }
   z-index: 1;
 }
 
-#bee {
+.animal-img {
   z-index: 2;
   position: absolute;
 }
