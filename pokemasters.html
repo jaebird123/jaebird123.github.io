@@ -1,0 +1,215 @@
+<!doctype html>
+
+<html lang="en">
+<head><style>
+    html * {
+        color: #000;
+        font-family: Arial;
+    }
+    h2 {
+        padding-top: 20px;
+        margin-bottom: 0px;
+    }
+    body > p {
+        margin-top: 5px;
+    }
+    #tournaments table {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    #tournaments table tr:first-child td {
+        font-weight: bold;
+        padding-bottom: 8px;
+    }
+    #tournaments table tr:not(:first-child) td {
+        padding-right: 30px;
+    }
+    #tournaments table tr:not(:first-child) td:nth-child(3) {
+        text-align: center;
+    }
+    #tournaments table tr.winner {
+        font-weight: bold;
+    }
+    .pokemon-img {
+        border-radius: 50%;
+    }
+    .pokemon-img.kamon, #tournaments table tr.winner.kamon {
+        background: radial-gradient(#e74c3c 5%, white 70%);
+    }
+    .pokemon-img.jbird, #tournaments table tr.winner.jbird {
+        background: radial-gradient(#f1c40f 15%, white 70%);
+    }
+    .pokemon-img.steve, #tournaments table tr.winner.steve {
+        background: radial-gradient(#9b59b6 5%, white 70%);
+    }
+</style></head>
+
+<body>
+    <h2>Kamon</h2>
+    <p class="kamon player-description">[my description]</p>
+    <div id="kamon-pokemon"></div>
+
+    <h2>JaeBird's Pokemon</h2>
+    <p class="jbird player-description">[my description]</p>
+    <div id="jbird-pokemon"></div>
+
+    <h2>Steve's Pokemon</h2>
+    <p class="steve player-description">[my description]</p>
+    <div id="steve-pokemon"></div>
+
+    <h2>Tournaments</h2>
+    <div id="tournaments"></div>
+<script>
+    var kamon_pokemon = [6, 65, 68, 115, 130, 142, 143, 145, 149];
+    var jbird_pokemon = [9, 38, 80, 82, 94, 103, 110, 127, 131, 144];
+    var steve_pokemon = [3, 12, 34, 53, 59, 101, 132, 146];
+
+    var tournaments = [
+        [
+            '1993/01/20',
+            [6, 65, 68, 115, 130, 142, 1],
+            [9, 38, 80, 82, 94, 103, 3],
+            [3, 12, 34, 53, 59, 101, 4]
+        ],
+        [
+            '1993/05/03',
+            [6, 65, 68, 115, 130, 142, 1],
+            [9, 38, 80, 82, 94, 103, 3],
+            [3, 12, 34, 53, 59, 101, 2]
+        ],
+        [
+            '1993/06/17',               // Date
+            [6, 65, 68, 115, 130, 142, 4],      // kamon_pkmn_1, ..., kamon_pkmn_6, kamon_matches_won
+            [9, 38, 80, 82, 94, 103, 2],   // jbird_pkmn_1, ..., jbird_pkmn_6, jbird_matches_won
+            [3, 12, 34, 53, 59, 101, 0] // steve_pkmn_1, ..., steve_pkmn_6, steve_matches_won
+        ]
+    ]
+
+
+    function pad(num, size) {
+        var s = "000000000" + num;
+        return s.substr(s.length-size);
+    }
+
+    function setPokemon(player_pokemon_div, player_pokemon, classes) {
+        for (var i = 0; i < player_pokemon.length; i++) {
+            var tmp = document.createElement('img')
+            tmp.src = "https://www.serebii.net/sunmoon/pokemon/" + pad(player_pokemon[i], 3) + ".png";
+            for (var j = 0; j < classes.length; j++) {
+                tmp.classList.add(classes[j]);
+            }
+            player_pokemon_div.appendChild(tmp);
+        }
+    }
+
+    function setTournaments(tournaments) {
+        tournaments_dom = document.getElementById("tournaments");
+        for (var i = tournaments.length-1; i >= 0; i--) {
+            var tournament_dom = document.createElement('table');
+            var tournament_body_dom = document.createElement('tbody');
+
+            var tournament_name_row = document.createElement('tr');
+            var tournament_name_row_td = make_dom_element('td', 'Tournament ' + (i+1) + ', ' + tournaments[i][0]);
+            tournament_name_row_td.setAttribute("colspan", "3");
+            tournament_name_row_td.className = "tournament_name_row_td";
+            tournament_name_row.appendChild(tournament_name_row_td);
+
+            var header_row = document.createElement('tr');
+            header_row.appendChild(make_dom_element('td', 'Player'));
+            header_row.appendChild(make_dom_element('td', 'Pokemon'));
+            header_row.appendChild(make_dom_element('td', 'Wins'));
+
+            // Figure out the winner. Append 'winner' onto their list of classes to be used for their tr in the table
+            row_classes = [['kamon'], ['jbird'], ['steve']];
+            winner_index = index_of_max([tournaments[i][1][6], tournaments[i][2][6], tournaments[i][3][6]]);
+            row_classes[winner_index].push('winner');
+
+            // Make a row for each player in the table
+            var kamon_row = make_tournament_table_row('Kamon', tournaments[i][1].slice(0, 6), tournaments[i][1][6], row_classes[0]);
+            var jbird_row = make_tournament_table_row('JaeBird', tournaments[i][2].slice(0, 6), tournaments[i][2][6], row_classes[1]);
+            var steve_row = make_tournament_table_row('Steve', tournaments[i][3].slice(0, 6), tournaments[i][3][6], row_classes[2]);
+
+            tournament_body_dom.appendChild(tournament_name_row);
+            tournament_body_dom.appendChild(header_row);
+            tournament_body_dom.appendChild(kamon_row);
+            tournament_body_dom.appendChild(jbird_row);
+            tournament_body_dom.appendChild(steve_row);
+            tournament_dom.appendChild(tournament_body_dom);
+            tournaments_dom.appendChild(tournament_dom);
+        }
+    }
+
+    function make_dom_element(tag, innerHTML) {
+        var dom_element = document.createElement(tag);
+        dom_element.innerHTML = innerHTML;
+        return dom_element;
+    }
+
+    function make_tournament_table_row(player, pokemon, wins, classes) {
+        var row = document.createElement('tr');
+        var player_div = document.createElement('td');
+        player_div.innerHTML = player;
+        var pokemon_div = document.createElement('td');
+        for (var i = 0; i < pokemon.length; i++) {
+            pokemon_div.appendChild(get_pokemon_icon(pokemon[i]));
+        }
+        var wins_div = document.createElement('td');
+        wins_div.innerHTML = wins;
+        row.appendChild(player_div);
+        row.appendChild(pokemon_div);
+        row.appendChild(wins_div);
+        for (var i = 0; i < classes.length; i++) {
+            row.classList.add(classes[i]);
+        }
+        return row;
+    }
+
+    function setPlayerDescriptions() {
+        players = ['kamon', 'jbird', 'steve'];
+        for (var i = 0; i < players.length; i++) {
+            var n_tournament_wins = document.querySelectorAll('.winner.' + players[i]).length;
+            var n_pokemon = document.querySelectorAll('.pokemon-img.' + players[i]).length;
+            var n_match_wins = 0;
+            var match_win_doms = document.querySelectorAll('tr.' + players[i] + ' td:nth-child(3)');
+            for (var j = 0; j < match_win_doms.length; j++) {
+                n_match_wins += parseInt(match_win_doms[j].innerHTML);
+            }
+            var description_dom = document.querySelectorAll('.player-description.' + players[i])[0];
+            description_dom.innerHTML = n_tournament_wins + ' Tournament Wins, ' + n_match_wins + ' Match Wins, ' + n_pokemon + ' Pokemon';
+        }
+    }
+
+    function get_pokemon_icon(pokemon_number) {
+        var img = document.createElement('img');
+        img.src = "https://www.serebii.net/pokedex-sm/icon/" + pad(pokemon_number, 3) + ".png";
+        return img;
+    }
+
+    function createElementFromHTML(htmlString) {
+        var div = document.createElement('div');
+        div.innerHTML = htmlString.trim();
+        return div.firstChild; 
+    }
+
+    function index_of_max(arr) {
+        imax = 0;
+        for (var i = 1; i < arr.length; i++) {
+            if (arr[i] > arr[imax]) {
+                imax = i;
+            }
+        }
+        return imax;
+    }
+
+    var kamon_pokemon_div = document.getElementById("kamon-pokemon");
+    var jbird_pokemon_div = document.getElementById("jbird-pokemon");
+    var steve_pokemon_div = document.getElementById("steve-pokemon");
+    setPokemon(kamon_pokemon_div, kamon_pokemon, ['pokemon-img', 'kamon']);
+    setPokemon(jbird_pokemon_div, jbird_pokemon, ['pokemon-img', 'jbird']);
+    setPokemon(steve_pokemon_div, steve_pokemon, ['pokemon-img', 'steve']);
+
+    setTournaments(tournaments);
+    setPlayerDescriptions();
+</script>
+</body>
+</html>
