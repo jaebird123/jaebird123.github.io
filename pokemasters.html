@@ -6,6 +6,9 @@
         color: #000;
         font-family: Arial;
     }
+    html {
+        background-color: #ecf0f1;
+    }
     h2 {
         padding-top: 20px;
         margin-bottom: 0px;
@@ -13,13 +16,19 @@
     body > p {
         margin-top: 5px;
     }
+    .col {
+        float: left;
+        padding-right: 40px;
+    }
     #tournaments table,
-    #drafts      table {
+    #drafts      table,
+    #trades      table {
         margin-top: 20px;
         margin-bottom: 20px;
     }
     #tournaments table tr:first-child td,
-    #drafts      table tr:first-child td {
+    #drafts      table tr:first-child td,
+    #trades      table tr:first-child td {
         font-weight: bold;
         padding-bottom: 8px;
     }
@@ -27,7 +36,8 @@
     #drafts      table tr:not(:first-child) td {
         padding-right: 30px;
     }
-    #tournaments table tr:not(:first-child) td:nth-child(3) {
+    #tournaments table tr:not(:first-child) td:nth-child(3),
+    #trades      table tr:not(:first-child) td:nth-child(3) {
         text-align: center;
     }
     #tournaments table tr.winner {
@@ -39,17 +49,21 @@
     #drafts table tr:not(:first-child) td {
         padding-bottom: 10px;
     }
+    #trades table tr:not(:first-child) td {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
     .pokemon-img {
         border-radius: 50%;
     }
-    .pokemon-img.kamon, #tournaments table tr.winner.kamon, #drafts table tr.kamon {
-        background: radial-gradient(#e74c3c 5%, white 70%);
+    .pokemon-img.kamon, #tournaments table tr.winner.kamon, #drafts table tr.kamon, #trades table tr.kamon {
+        background: radial-gradient(#e74c3c 5%, #ecf0f1 70%);
     }
-    .pokemon-img.jbird, #tournaments table tr.winner.jbird, #drafts table tr.jbird {
-        background: radial-gradient(#f1c40f 15%, white 70%);
+    .pokemon-img.jbird, #tournaments table tr.winner.jbird, #drafts table tr.jbird, #trades table tr.jbird {
+        background: radial-gradient(#f1c40f 15%, #ecf0f1 70%);
     }
-    .pokemon-img.steve, #tournaments table tr.winner.steve, #drafts table tr.steve {
-        background: radial-gradient(#9b59b6 5%, white 70%);
+    .pokemon-img.steve, #tournaments table tr.winner.steve, #drafts table tr.steve, #trades table tr.steve {
+        background: radial-gradient(#9b59b6 5%, #ecf0f1 70%);
     }
 </style></head>
 
@@ -67,11 +81,20 @@
     <p class="steve player-description">[my description]</p>
     <div id="steve-pokemon"></div>
 
-    <h2>Tournaments</h2>
-    <div id="tournaments"></div>
+    <div class="col">
+        <h2>Tournaments</h2>
+        <div id="tournaments"></div>
+    </div>
 
-    <h2>Drafts</h2>
-    <div id="drafts"></div>
+    <div class="col">
+        <h2>Drafts</h2>
+        <div id="drafts"></div>
+    </div>
+
+    <div class="col">
+        <h2>Trades</h2>
+        <div id="trades"></div>
+    </div>
 <script>
     var kamon_pokemon = [6, 65, 68, 115, 130, 142, 143, 145, 149, 157, 176, 184, 196, 197, 230, 237, 282, 289, 303, 356, 357, 376, 398, 405, 409, 461, 497, 534, 545, 567, 571, 579, 598, 612, 635, 655, 660, 663, 693, 695, 697];
     var jbird_pokemon = [9, 38, 80, 82, 94, 103, 110, 127, 131, 144, 160, 169, 208, 212, 214, 227, 233, 235, 242, 248, 254, 260, 344, 350, 395, 437, 445, 460, 464, 466, 467, 468, 473, 479, 547, 560, 561, 589, 591, 609, 625, 637, 658, 681, 683, 691, 703, 707, 709];
@@ -100,16 +123,32 @@
 
     var drafts = [
         [
-            '1993/01/01',
-            [6],
-            [9],
-            [3]
+            '1993/01/01', // Date
+            [6],          // kamon_pkmn_1, ..., kamon_pkmn_m
+            [9],          // jbird_pkmn_1, ..., jbird_pkmn_n
+            [3]           // steve_pkmn_1, ..., steve_pkmn_o
         ],
         [
             '1993/01/02',
             [65, 68, 115, 130, 142, 143, 145, 149, 157, 176, 184, 196, 197, 230, 237, 282, 289, 303, 356, 357, 376, 398, 405, 409, 461, 497, 534, 545, 567, 571, 579, 598, 612, 635, 655, 660, 663, 693, 695, 697],
             [38, 80, 82, 94, 103, 110, 127, 131, 144, 160, 169, 208, 212, 214, 227, 233, 235, 242, 248, 254, 260, 344, 350, 395, 437, 445, 460, 464, 466, 467, 468, 473, 479, 547, 560, 561, 589, 591, 609, 625, 637, 658, 681, 683, 691, 703, 707, 709],
             [12, 34, 53, 59, 101, 132, 146, 199, 229, 257, 302, 308, 346, 373, 424, 448, 472, 474, 475, 620, 652, 687, 700, 715]
+        ]
+    ]
+
+    var trades = [
+        [
+            '1994/01/01', // Date
+            [6, 0, 1],    // pkmn_1, from_player_id, to_player_id (ex: Charizard from Kamon to JaeBird)
+            [9, 1, 2],    // pkmn_2, from_player_id, to_player_id (ex: Blastoise from JaeBird to Steve)
+            [3, 2, 0]     // pkmn_3, from_player_id, to_player_id (ex: Venausaur from Steve to Kamon)
+        ],                // ...
+        [
+            '1994/01/02',
+            [115, 0, 1],
+            [376, 0, 1],
+            [663, 0, 1],
+            [169, 1, 0]
         ]
     ]
 
@@ -133,13 +172,8 @@
     function setTournaments(tournaments) {
         tournaments_dom = document.getElementById("tournaments");
         for (var i = tournaments.length-1; i >= 0; i--) {
-            var tournament_dom = document.createElement('table');
-            var tournament_body_dom = document.createElement('tbody');
-
-            var tournament_name_row = document.createElement('tr');
-            var tournament_name_row_td = make_dom_element('td', 'Tournament ' + (i+1) + ', ' + tournaments[i][0]);
-            tournament_name_row_td.setAttribute("colspan", "3");
-            tournament_name_row.appendChild(tournament_name_row_td);
+            var table, tbody;
+            [table, tbody] = make_table_with_header('Tournament '+(i+1)+', '+tournaments[i][0], "3");
 
             var header_row = document.createElement('tr');
             header_row.appendChild(make_dom_element('td', 'Player'));
@@ -156,13 +190,12 @@
             var jbird_row = make_tournament_table_row('JaeBird', tournaments[i][2].slice(0, 6), tournaments[i][2][6], row_classes[1]);
             var steve_row = make_tournament_table_row('Steve', tournaments[i][3].slice(0, 6), tournaments[i][3][6], row_classes[2]);
 
-            tournament_body_dom.appendChild(tournament_name_row);
-            tournament_body_dom.appendChild(header_row);
-            tournament_body_dom.appendChild(kamon_row);
-            tournament_body_dom.appendChild(jbird_row);
-            tournament_body_dom.appendChild(steve_row);
-            tournament_dom.appendChild(tournament_body_dom);
-            tournaments_dom.appendChild(tournament_dom);
+            // tbody.appendChild(tournament_name_row);
+            tbody.appendChild(header_row);
+            tbody.appendChild(kamon_row);
+            tbody.appendChild(jbird_row);
+            tbody.appendChild(steve_row);
+            tournaments_dom.appendChild(table);
         }
     }
 
@@ -185,22 +218,28 @@
         return row;
     }
 
-    function setDrafts(drafts) {
-        tournaments_dom = document.getElementById("drafts");
-        for (var i = drafts.length-1; i >= 0; i--) {
-            var draft_dom = document.createElement('table');
-            var draft_body_dom = document.createElement('tbody');
+    function make_table_with_header(header_text, n_cols) {
+        var table = document.createElement('table');
+        var tbody = document.createElement('tbody');
+        table.appendChild(tbody);
+        var tr = document.createElement('tr');
+        tbody.appendChild(tr);
+        var td = make_dom_element('td', header_text);
+        tr.appendChild(td);
+        td.setAttribute("colspan", n_cols);
+        return [table, tbody]
+    }
 
-            var draft_name_row = document.createElement('tr');
-            var draft_name_row_td = make_dom_element('td', 'Draft ' + (i+1) + ', ' + drafts[i][0]);
-            draft_name_row_td.setAttribute("colspan", "2");
-            draft_name_row.appendChild(draft_name_row_td);
-            draft_body_dom.appendChild(draft_name_row);
+    function setDrafts(drafts) {
+        drafts_dom = document.getElementById("drafts");
+        for (var i = drafts.length-1; i >= 0; i--) {
+            var table, tbody;
+            [table, tbody] = make_table_with_header('Draft '+(i+1)+', '+drafts[i][0], "2");
 
             var header_row = document.createElement('tr');
             header_row.appendChild(make_dom_element('td', 'Player'));
             header_row.appendChild(make_dom_element('td', 'Pokemon'));
-            draft_body_dom.appendChild(header_row);
+            tbody.appendChild(header_row);
 
             // Make a row for each player in the table
             var players = [['Kamon', 'kamon'], ['JaeBird', 'jbird'], ['Steve', 'steve']]; // Names and dom classes
@@ -208,10 +247,10 @@
             for (var j = 0; j < players.length; j++) {
                 var row = make_draft_table_row(players[j][0], drafts[i][j+1]);
                 row.className = players[j][1];
-                draft_body_dom.appendChild(row);
+                tbody.appendChild(row);
             }
-            draft_dom.appendChild(draft_body_dom);
-            tournaments_dom.appendChild(draft_dom);
+            table.appendChild(tbody);
+            drafts_dom.appendChild(table);
         }
     }
 
@@ -228,19 +267,57 @@
         return row;
     }
 
+    function setTrades(trades) {
+        trades_dom = document.getElementById("trades");
+        for (var i = trades.length-1; i >= 0; i--) {
+            var table, tbody;
+            [table, tbody] = make_table_with_header('Trade '+(i+1)+', '+trades[i][0], "4");
+            trades_dom.append(table);
+
+            var header_row = document.createElement('tr');
+            header_row.appendChild(make_dom_element('td', 'From'));
+            header_row.appendChild(make_dom_element('td', ''));
+            header_row.appendChild(make_dom_element('td', 'Pokemon'));
+            header_row.appendChild(make_dom_element('td', ''));
+            header_row.appendChild(make_dom_element('td', 'To'));
+            tbody.appendChild(header_row);
+
+            var players = [['Kamon', 'kamon'], ['JaeBird', 'jbird'], ['Steve', 'steve']]; // Names and dom classes
+            for (var j = 1; j < trades[i].length; j++) {
+                var tr = document.createElement('tr');
+                tbody.appendChild(tr);
+                var from_player = players[trades[i][j][1]];
+                var to_player = players[trades[i][j][2]];
+                tr.appendChild(make_dom_element('td', from_player[0]));
+                tr.appendChild(get_pokemon_icon_td(trades[i][j][0]));
+                tr.appendChild(make_dom_element('td', "→"));
+                tr.appendChild(get_pokemon_icon_td(trades[i][j][0]));
+                tr.appendChild(make_dom_element('td', to_player[0]));
+                tr.className = to_player[1];
+            }
+        }
+    }
+
     function setPlayerDescriptions() {
         players = ['kamon', 'jbird', 'steve'];
         for (var i = 0; i < players.length; i++) {
             var n_tournament_wins = document.querySelectorAll('.winner.' + players[i]).length;
             var n_pokemon = document.querySelectorAll('.pokemon-img.' + players[i]).length;
             var n_match_wins = 0;
-            var match_win_doms = document.querySelectorAll('tr.' + players[i] + ' td:nth-child(3)');
+            var match_win_doms = document.querySelectorAll('#tournaments tr.' + players[i] + ' td:nth-child(3)');
             for (var j = 0; j < match_win_doms.length; j++) {
                 n_match_wins += parseInt(match_win_doms[j].innerHTML);
             }
             var description_dom = document.querySelectorAll('.player-description.' + players[i])[0];
             description_dom.innerHTML = n_tournament_wins + ' Tournament Wins, ' + n_match_wins + ' Match Wins, ' + n_pokemon + ' Pokemon';
         }
+    }
+
+    function get_pokemon_icon_td(pokemon_number) {
+        var img = get_pokemon_icon(pokemon_number);
+        var td = document.createElement('td');
+        td.appendChild(img);
+        return td;
     }
 
     function get_pokemon_icon(pokemon_number) {
@@ -280,6 +357,7 @@
 
     setTournaments(tournaments);
     setDrafts(drafts);
+    setTrades(trades);
     setPlayerDescriptions();
 </script>
 </body>
