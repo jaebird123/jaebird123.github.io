@@ -13,15 +13,18 @@
     body > p {
         margin-top: 5px;
     }
-    #tournaments table {
+    #tournaments table,
+    #drafts      table {
         margin-top: 20px;
         margin-bottom: 20px;
     }
-    #tournaments table tr:first-child td {
+    #tournaments table tr:first-child td,
+    #drafts      table tr:first-child td {
         font-weight: bold;
         padding-bottom: 8px;
     }
-    #tournaments table tr:not(:first-child) td {
+    #tournaments table tr:not(:first-child) td,
+    #drafts      table tr:not(:first-child) td {
         padding-right: 30px;
     }
     #tournaments table tr:not(:first-child) td:nth-child(3) {
@@ -30,16 +33,22 @@
     #tournaments table tr.winner {
         font-weight: bold;
     }
+    #drafts {
+        max-width: 400px;
+    }
+    #drafts table tr:not(:first-child) td {
+        padding-bottom: 10px;
+    }
     .pokemon-img {
         border-radius: 50%;
     }
-    .pokemon-img.kamon, #tournaments table tr.winner.kamon {
+    .pokemon-img.kamon, #tournaments table tr.winner.kamon, #drafts table tr.kamon {
         background: radial-gradient(#e74c3c 5%, white 70%);
     }
-    .pokemon-img.jbird, #tournaments table tr.winner.jbird {
+    .pokemon-img.jbird, #tournaments table tr.winner.jbird, #drafts table tr.jbird {
         background: radial-gradient(#f1c40f 15%, white 70%);
     }
-    .pokemon-img.steve, #tournaments table tr.winner.steve {
+    .pokemon-img.steve, #tournaments table tr.winner.steve, #drafts table tr.steve {
         background: radial-gradient(#9b59b6 5%, white 70%);
     }
 </style></head>
@@ -60,6 +69,9 @@
 
     <h2>Tournaments</h2>
     <div id="tournaments"></div>
+
+    <h2>Drafts</h2>
+    <div id="drafts"></div>
 <script>
     var kamon_pokemon = [6, 65, 68, 115, 130, 142, 143, 145, 149, 157, 176, 184, 196, 197, 230, 237, 282, 289, 303, 356, 357, 376, 398, 405, 409, 461, 497, 534, 545, 567, 571, 579, 598, 612, 635, 655, 660, 663, 693, 695, 697];
     var jbird_pokemon = [9, 38, 80, 82, 94, 103, 110, 127, 131, 144, 160, 169, 208, 212, 214, 227, 233, 235, 242, 248, 254, 260, 344, 350, 395, 437, 445, 460, 464, 466, 467, 468, 473, 479, 547, 560, 561, 589, 591, 609, 625, 637, 658, 681, 683, 691, 703, 707, 709];
@@ -67,10 +79,10 @@
 
     var tournaments = [
         [
-            '1993/01/20',
-            [6, 65, 68, 115, 130, 142, 1],
-            [9, 38, 80, 82, 94, 103, 3],
-            [3, 12, 34, 53, 59, 101, 4]
+            '1993/01/20',                  // Date
+            [6, 65, 68, 115, 130, 142, 1], // kamon_pkmn_1, ..., kamon_pkmn_6, kamon_matches_won
+            [9, 38, 80, 82, 94, 103, 3],   // jbird_pkmn_1, ..., jbird_pkmn_6, jbird_matches_won
+            [3, 12, 34, 53, 59, 101, 4]    // steve_pkmn_1, ..., steve_pkmn_6, steve_matches_won
         ],
         [
             '1993/05/03',
@@ -79,10 +91,25 @@
             [3, 12, 34, 53, 59, 101, 2]
         ],
         [
-            '1993/06/17',               // Date
-            [6, 65, 68, 115, 130, 142, 4],      // kamon_pkmn_1, ..., kamon_pkmn_6, kamon_matches_won
-            [9, 38, 80, 82, 94, 103, 2],   // jbird_pkmn_1, ..., jbird_pkmn_6, jbird_matches_won
-            [3, 12, 34, 53, 59, 101, 0] // steve_pkmn_1, ..., steve_pkmn_6, steve_matches_won
+            '1993/06/17',
+            [6, 65, 68, 115, 130, 142, 4],
+            [9, 38, 80, 82, 94, 103, 2],
+            [3, 12, 34, 53, 59, 101, 0]
+        ]
+    ]
+
+    var drafts = [
+        [
+            '1993/01/01',
+            [6],
+            [9],
+            [3]
+        ],
+        [
+            '1993/01/02',
+            [65, 68, 115, 130, 142, 143, 145, 149, 157, 176, 184, 196, 197, 230, 237, 282, 289, 303, 356, 357, 376, 398, 405, 409, 461, 497, 534, 545, 567, 571, 579, 598, 612, 635, 655, 660, 663, 693, 695, 697],
+            [38, 80, 82, 94, 103, 110, 127, 131, 144, 160, 169, 208, 212, 214, 227, 233, 235, 242, 248, 254, 260, 344, 350, 395, 437, 445, 460, 464, 466, 467, 468, 473, 479, 547, 560, 561, 589, 591, 609, 625, 637, 658, 681, 683, 691, 703, 707, 709],
+            [12, 34, 53, 59, 101, 132, 146, 199, 229, 257, 302, 308, 346, 373, 424, 448, 472, 474, 475, 620, 652, 687, 700, 715]
         ]
     ]
 
@@ -112,7 +139,6 @@
             var tournament_name_row = document.createElement('tr');
             var tournament_name_row_td = make_dom_element('td', 'Tournament ' + (i+1) + ', ' + tournaments[i][0]);
             tournament_name_row_td.setAttribute("colspan", "3");
-            tournament_name_row_td.className = "tournament_name_row_td";
             tournament_name_row.appendChild(tournament_name_row_td);
 
             var header_row = document.createElement('tr');
@@ -140,12 +166,6 @@
         }
     }
 
-    function make_dom_element(tag, innerHTML) {
-        var dom_element = document.createElement(tag);
-        dom_element.innerHTML = innerHTML;
-        return dom_element;
-    }
-
     function make_tournament_table_row(player, pokemon, wins, classes) {
         var row = document.createElement('tr');
         var player_div = document.createElement('td');
@@ -162,6 +182,49 @@
         for (var i = 0; i < classes.length; i++) {
             row.classList.add(classes[i]);
         }
+        return row;
+    }
+
+    function setDrafts(drafts) {
+        tournaments_dom = document.getElementById("drafts");
+        for (var i = drafts.length-1; i >= 0; i--) {
+            var draft_dom = document.createElement('table');
+            var draft_body_dom = document.createElement('tbody');
+
+            var draft_name_row = document.createElement('tr');
+            var draft_name_row_td = make_dom_element('td', 'Draft ' + (i+1) + ', ' + drafts[i][0]);
+            draft_name_row_td.setAttribute("colspan", "2");
+            draft_name_row.appendChild(draft_name_row_td);
+            draft_body_dom.appendChild(draft_name_row);
+
+            var header_row = document.createElement('tr');
+            header_row.appendChild(make_dom_element('td', 'Player'));
+            header_row.appendChild(make_dom_element('td', 'Pokemon'));
+            draft_body_dom.appendChild(header_row);
+
+            // Make a row for each player in the table
+            var players = [['Kamon', 'kamon'], ['JaeBird', 'jbird'], ['Steve', 'steve']]; // Names and dom classes
+            var table_rows = []
+            for (var j = 0; j < players.length; j++) {
+                var row = make_draft_table_row(players[j][0], drafts[i][j+1]);
+                row.className = players[j][1];
+                draft_body_dom.appendChild(row);
+            }
+            draft_dom.appendChild(draft_body_dom);
+            tournaments_dom.appendChild(draft_dom);
+        }
+    }
+
+    function make_draft_table_row(player, pokemon) {
+        var row = document.createElement('tr');
+        var player_div = document.createElement('td');
+        player_div.innerHTML = player;
+        var pokemon_div = document.createElement('td');
+        for (var i = 0; i < pokemon.length; i++) {
+            pokemon_div.appendChild(get_pokemon_icon(pokemon[i]));
+        }
+        row.appendChild(player_div);
+        row.appendChild(pokemon_div);
         return row;
     }
 
@@ -192,6 +255,12 @@
         return div.firstChild; 
     }
 
+    function make_dom_element(tag, innerHTML) {
+        var dom_element = document.createElement(tag);
+        dom_element.innerHTML = innerHTML;
+        return dom_element;
+    }
+
     function index_of_max(arr) {
         imax = 0;
         for (var i = 1; i < arr.length; i++) {
@@ -210,6 +279,7 @@
     setPokemon(steve_pokemon_div, steve_pokemon, ['pokemon-img', 'steve']);
 
     setTournaments(tournaments);
+    setDrafts(drafts);
     setPlayerDescriptions();
 </script>
 </body>
