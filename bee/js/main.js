@@ -92,7 +92,7 @@ function get_years_and_days_since() {
   var yearB = dateB.getFullYear();
   var dayB = dateB.getDate();
 
-  var dateA = new Date('10/10/2016');
+  var dateA = new Date('10/21/2016'); // We think 10/21 is first date and 10/15 is first sighting
   var yearA = dateA.getFullYear();
   var dayA = dateA.getDate();
 
