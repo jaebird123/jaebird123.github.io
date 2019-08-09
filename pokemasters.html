@@ -103,10 +103,15 @@
         <div id="trades"></div>
     </div>
 <script>
-    var kamon_pokemon = [6, 65, 68, 115, 130, 142, 143, 145, 149, 157, 176, 184, 196, 197, 230, 237, 282, 289, 303, 356, 357, 376, 398, 405, 409, 461, 497, 534, 545, 567, 571, 579, 598, 612, 635, 655, 660, 663, 693, 695, 697];
-    var jbird_pokemon = [9, 38, 80, 82, 94, 103, 110, 127, 131, 144, 160, 169, 208, 212, 214, 227, 233, 235, 242, 248, 254, 260, 344, 350, 395, 437, 445, 460, 464, 466, 467, 468, 473, 479, 547, 560, 561, 589, 591, 609, 625, 637, 658, 681, 683, 691, 703, 707, 709];
-    var steve_pokemon = [3, 12, 34, 53, 59, 101, 132, 146, 199, 229, 257, 302, 308, 346, 373, 424, 448, 472, 474, 475, 620, 652, 687, 700, 715];
-    var james_pokemon = [483, 484, 485, 486, 487, 493];
+    var player_names = ['Kamon', 'JaeBird', 'Steve', 'James'];
+    var player_class = ['kamon', 'jbird', 'steve', 'james'];
+
+    var player_pokemon = [
+        [6, 65, 68, 115, 130, 142, 143, 145, 149, 157, 176, 184, 196, 197, 230, 237, 282, 289, 303, 356, 357, 376, 398, 405, 409, 461, 497, 534, 545, 567, 571, 579, 598, 612, 635, 655, 660, 663, 693, 695, 697],
+        [9, 38, 80, 82, 94, 103, 110, 127, 131, 144, 160, 169, 208, 212, 214, 227, 233, 235, 242, 248, 254, 260, 344, 350, 395, 437, 445, 460, 464, 466, 467, 468, 473, 479, 547, 560, 561, 589, 591, 609, 625, 637, 658, 681, 683, 691, 703, 707, 709],
+        [3, 12, 34, 53, 59, 101, 132, 146, 199, 229, 257, 302, 308, 346, 373, 424, 448, 472, 474, 475, 620, 652, 687, 700, 715],
+        [483, 484, 485, 486, 487, 493]
+    ];
 
     var tournaments = [
         [
@@ -183,7 +188,7 @@
         }
     }
 
-    function setTournaments(tournaments) {
+    function setTournaments(tournaments, player_names, player_class) {
         tournaments_dom = document.getElementById("tournaments");
         for (var i = tournaments.length-1; i >= 0; i--) {
             var table, tbody;
@@ -195,27 +200,25 @@
             header_row.appendChild(make_dom_element('td', 'Wins'));
 
             // Figure out the winner. Append 'winner' onto their list of classes to be used for their tr in the table
-            row_classes = [['kamon'], ['jbird'], ['steve'], ['james']];
-            winner_index = index_of_max([tournaments[i][1][6], tournaments[i][2][6], tournaments[i][3][6], tournaments[i][4][6]]);
-            row_classes[winner_index].push('winner');
+            var row_classes = player_class.slice();
+            var n_wins = []
+            for (var j = 0; j < player_names.length; j++) {
+                n_wins[j] = tournaments[i][j+1][6];
+            }
+            winner_index = index_of_max(n_wins);
+            row_classes[winner_index] = row_classes[winner_index] + ' winner';
 
             // Make a row for each player in the table
-            var kamon_row = make_tournament_table_row('Kamon', tournaments[i][1].slice(0, 6), tournaments[i][1][6], row_classes[0]);
-            var jbird_row = make_tournament_table_row('JaeBird', tournaments[i][2].slice(0, 6), tournaments[i][2][6], row_classes[1]);
-            var steve_row = make_tournament_table_row('Steve', tournaments[i][3].slice(0, 6), tournaments[i][3][6], row_classes[2]);
-            var james_row = make_tournament_table_row('James', tournaments[i][4].slice(0, 6), tournaments[i][4][6], row_classes[3]);
-
-            // tbody.appendChild(tournament_name_row);
             tbody.appendChild(header_row);
-            tbody.appendChild(kamon_row);
-            tbody.appendChild(jbird_row);
-            tbody.appendChild(steve_row);
-            tbody.appendChild(james_row);
+            for (var j = 0; j < player_names.length; j++) {
+                var player_row = make_tournament_table_row(player_names[j], tournaments[i][j+1].slice(0, 6), tournaments[i][j+1][6], row_classes[j]);
+                tbody.appendChild(player_row);
+            }
             tournaments_dom.appendChild(table);
         }
     }
 
-    function make_tournament_table_row(player, pokemon, wins, classes) {
+    function make_tournament_table_row(player, pokemon, wins, cls) {
         var row = document.createElement('tr');
         var player_div = document.createElement('td');
         player_div.innerHTML = player;
@@ -228,6 +231,7 @@
         row.appendChild(player_div);
         row.appendChild(pokemon_div);
         row.appendChild(wins_div);
+        var classes = cls.split(' ');
         for (var i = 0; i < classes.length; i++) {
             row.classList.add(classes[i]);
         }
@@ -246,7 +250,7 @@
         return [table, tbody]
     }
 
-    function setDrafts(drafts) {
+    function setDrafts(drafts, player_names, player_class) {
         drafts_dom = document.getElementById("drafts");
         for (var i = drafts.length-1; i >= 0; i--) {
             var table, tbody;
@@ -258,11 +262,10 @@
             tbody.appendChild(header_row);
 
             // Make a row for each player in the table
-            var players = [['Kamon', 'kamon'], ['JaeBird', 'jbird'], ['Steve', 'steve'], ['James', 'james']]; // Names and dom classes
             var table_rows = []
-            for (var j = 0; j < players.length; j++) {
-                var row = make_draft_table_row(players[j][0], drafts[i][j+1]);
-                row.className = players[j][1];
+            for (var j = 0; j < player_names.length; j++) {
+                var row = make_draft_table_row(player_names[j], drafts[i][j+1]);
+                row.className = player_class[j];
                 tbody.appendChild(row);
             }
             table.appendChild(tbody);
@@ -283,7 +286,7 @@
         return row;
     }
 
-    function setTrades(trades) {
+    function setTrades(trades, player_names, player_class) {
         trades_dom = document.getElementById("trades");
         for (var i = trades.length-1; i >= 0; i--) {
             var table, tbody;
@@ -298,33 +301,31 @@
             header_row.appendChild(make_dom_element('td', 'To'));
             tbody.appendChild(header_row);
 
-            var players = [['Kamon', 'kamon'], ['JaeBird', 'jbird'], ['Steve', 'steve'], ['James', 'james']]; // Names and dom classes
             for (var j = 1; j < trades[i].length; j++) {
                 var tr = document.createElement('tr');
                 tbody.appendChild(tr);
-                var from_player = players[trades[i][j][1]];
-                var to_player = players[trades[i][j][2]];
-                tr.appendChild(make_dom_element('td', from_player[0]));
+                var from_player_idx = trades[i][j][1];
+                var to_player_idx = trades[i][j][2];
+                tr.appendChild(make_dom_element('td', player_names[from_player_idx]));
                 tr.appendChild(get_pokemon_icon_td(trades[i][j][0]));
                 tr.appendChild(make_dom_element('td', "→"));
                 tr.appendChild(get_pokemon_icon_td(trades[i][j][0]));
-                tr.appendChild(make_dom_element('td', to_player[0]));
-                tr.className = to_player[1];
+                tr.appendChild(make_dom_element('td', player_names[to_player_idx]));
+                tr.className = player_class[to_player_idx];
             }
         }
     }
 
-    function setPlayerDescriptions() {
-        players = ['kamon', 'jbird', 'steve', 'james'];
-        for (var i = 0; i < players.length; i++) {
-            var n_tournament_wins = document.querySelectorAll('.winner.' + players[i]).length;
-            var n_pokemon = document.querySelectorAll('.pokemon-img.' + players[i]).length;
+    function setPlayerDescriptions(player_class) {
+        for (var i = 0; i < player_class.length; i++) {
+            var n_tournament_wins = document.querySelectorAll('.winner.' + player_class[i]).length;
+            var n_pokemon = document.querySelectorAll('.pokemon-img.' + player_class[i]).length;
             var n_match_wins = 0;
-            var match_win_doms = document.querySelectorAll('#tournaments tr.' + players[i] + ' td:nth-child(3)');
+            var match_win_doms = document.querySelectorAll('#tournaments tr.' + player_class[i] + ' td:nth-child(3)');
             for (var j = 0; j < match_win_doms.length; j++) {
                 n_match_wins += parseInt(match_win_doms[j].innerHTML);
             }
-            var description_dom = document.querySelectorAll('.player-description.' + players[i])[0];
+            var description_dom = document.querySelectorAll('.player-description.' + player_class[i])[0];
             description_dom.innerHTML = n_tournament_wins + ' Tournament Wins, ' + n_match_wins + ' Match Wins, ' + n_pokemon + ' Pokemon';
         }
     }
@@ -364,19 +365,15 @@
         return imax;
     }
 
-    var kamon_pokemon_div = document.getElementById("kamon-pokemon");
-    var jbird_pokemon_div = document.getElementById("jbird-pokemon");
-    var steve_pokemon_div = document.getElementById("steve-pokemon");
-    var james_pokemon_div = document.getElementById("james-pokemon");
-    setPokemon(kamon_pokemon_div, kamon_pokemon, ['pokemon-img', 'kamon']);
-    setPokemon(jbird_pokemon_div, jbird_pokemon, ['pokemon-img', 'jbird']);
-    setPokemon(steve_pokemon_div, steve_pokemon, ['pokemon-img', 'steve']);
-    setPokemon(james_pokemon_div, james_pokemon, ['pokemon-img', 'james']);
+    for (var i = 0; i < player_pokemon.length; i++) {
+        var player_pokemon_div = document.getElementById(player_class[i] + "-pokemon");
+        setPokemon(player_pokemon_div, player_pokemon[i], ["pokemon-img", player_class[i]]);
+    }
 
-    setTournaments(tournaments);
-    setDrafts(drafts);
-    setTrades(trades);
-    setPlayerDescriptions();
+    setTournaments(tournaments, player_names, player_class);
+    setDrafts(drafts, player_names, player_class);
+    setTrades(trades, player_names, player_class);
+    setPlayerDescriptions(player_class);
 </script>
 </body>
 </html>
