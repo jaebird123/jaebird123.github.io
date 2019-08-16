@@ -26,27 +26,34 @@
     div.pokemon > p, div.pokemon-icon > p {
         text-align: center;
     }
+    img.pokemon {
+        width: 100px;
+    }
 </style></head>
 
 <body>
     <h1>Pokemasters Draft: Season 4 - 2019/08/16</h1>
 
     <div id="available"></div>
+    <div id="sentimental"><h2>Sentimental</h2></div>
 
     <div class="col" id="player1"><h2>Kamon</h2></div>
-    <div class="col" id="player2"><h2>JBird</h2></div>
+    <div class="col" id="player2"><h2>JaeBird</h2></div>
     <div class="col" id="player3"><h2>Steve</h2></div>
     <div class="col" id="player4"><h2>James</h2></div>
 <script>
     var player_id = ["player1", "player2", "player3", "player4"]
 
-    var available_pokemon = [65, 68, 115, 130, 142, 143, 145, 149, 157, 176, 184, 196, 197, 230, 237, 282, 289, 303, 356, 357, 376, 398]
+    var available_pokemon = [3, 6, 38, 59, 65, 80, 89, 94, 105, 113, 115, 127, 130, 132, 142, 143, 149, 186, 176, 184, 212, 214, 227, 229, 230, 233, 235, 242, 248, 257, 260, 272, 279, 282, 302, 303, 308, 310, 323, 324, 350, 356, 373, 376, 398, 423, 424, 426, 437, 445, 448, 460, 461, 462, 468, 472, 473, 474, 475, 479, 497, 526, 530, 534, 547, 545, 553, 560, 576, 579, 584, 591, 598, 609, 620, 625, 635, 637, 658, 663, 681, 683, 700, 707, 727, 738, 752, 754, 758, 777, 778, 781, 784]
+    available_pokemon.sort(function(a, b){return a - b});
+
+    var sentimental_pokemon = [9, 12, 34, 53, 68, 82, 103, 110, 131, 144, 145, 146, 157, 160, 169, 196, 197, 199, 208, 237, 254, 289, 344, 346, 357, 395, 429, 464, 466, 467, 571, 589, 652, 687, 691, 693, 695, 697, 703, 709, 715];
 
     var player_pokemon = [
-        [6, 65, 68, 115, 130, 142, 143, 145, 149, 157, 176, 184, 196, 197, 230, 237, 282, 289, 303, 356, 357, 376, 398, 405, 409, 461, 497, 534, 545, 567, 571, 579, 598, 612, 635, 655, 660, 663, 693, 695, 697],
-        [9, 38, 80, 82, 94, 103, 110, 127, 131, 144, 160, 169, 208, 212, 214, 227, 233, 235, 242, 248, 254, 260, 344, 350, 395, 437, 445, 460, 464, 466, 467, 468, 473, 479, 547, 560, 561, 589, 591, 609, 625, 637, 658, 681, 683, 691, 703, 707, 709],
-        [3, 12, 34, 53, 59, 101, 132, 146, 199, 229, 257, 302, 308, 346, 373, 424, 448, 472, 474, 475, 620, 652, 687, 700, 715],
-        [483, 484, 485, 486, 487, 493]
+        [4],
+        [1],
+        [25],
+        [7]
     ];
 
     function makeDOM_div_pokemon(pokemon_id) {
@@ -55,7 +62,10 @@
         var p   = document.createElement("p");
         div.appendChild(img);
         div.appendChild(p);
-        img.src = "https://www.serebii.net/sunmoon/pokemon/" + pad(pokemon_id, 3) + ".png";
+        pokemon_id = pad(pokemon_id, 3);
+        img.src = "https://www.serebii.net/pokemon/art/" + pokemon_id + ".png";
+        // img.src = "https://www.serebii.net/sunmoon/pokemon/" + pokemon_id + ".png";
+        img.classList.add("pokemon");
         p.innerHTML = "#" + pokemon_id;
         div.classList.add("pokemon");
         return div;
@@ -72,7 +82,8 @@
         var p   = document.createElement("p");
         div.appendChild(img);
         div.appendChild(p);
-        img.src = "https://www.serebii.net/pokedex-sm/icon/" + pad(pokemon_id, 3) + ".png";
+        pokemon_id = pad(pokemon_id, 3);
+        img.src = "https://www.serebii.net/pokedex-sm/icon/" + pokemon_id + ".png";
         p.innerHTML = pokemon_id;
         div.classList.add("pokemon-icon");
         return div;
@@ -81,6 +92,10 @@
     available_pokemon_div = document.getElementById("available");
     for (var i = 0; i < available_pokemon.length; i++) {
         available_pokemon_div.appendChild(makeDOM_div_pokemon(available_pokemon[i]));
+    }
+    sentimental_pokemon_div = document.getElementById("sentimental");
+    for (var i = 0; i < sentimental_pokemon.length; i++) {
+        sentimental_pokemon_div.appendChild(makeDOM_div_pokemon(sentimental_pokemon[i]));
     }
     for (var i = 0; i < player_pokemon.length; i++) {
         var player_div = document.getElementById(player_id[i]);
