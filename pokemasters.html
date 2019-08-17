@@ -68,6 +68,7 @@
     }
     .pokemon-img {
         border-radius: 50%;
+        width: 100px;
     }
     .pokemon-img.kamon, #tournaments table tr.winner.kamon, #drafts table tr.kamon, #trades table tr.kamon {
         background: radial-gradient(#e74c3c 5%, #ecf0f1 70%);
@@ -236,7 +237,7 @@
     function setPokemon(player_pokemon_div, player_pokemon, classes) {
         for (var i = 0; i < player_pokemon.length; i++) {
             var tmp = document.createElement('img')
-            tmp.src = "https://www.serebii.net/sunmoon/pokemon/" + pad(player_pokemon[i], 3) + ".png";
+            tmp.src = "https://www.serebii.net/pokemon/art/" + pad(player_pokemon[i], 3) + ".png";
             for (var j = 0; j < classes.length; j++) {
                 tmp.classList.add(classes[j]);
             }
