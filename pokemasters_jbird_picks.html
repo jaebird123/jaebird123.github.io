@@ -35,6 +35,12 @@
     img.pokemon {
         width: 100px;
     }
+    div.pokemon-with-description {
+        padding-bottom: 20px;
+    }
+    p.note {
+        display: inline;
+    }
 </style></head>
 
 <body>
@@ -42,6 +48,8 @@
 
     <h2>Want</h2>
     <div id="want"></div>
+    <h2>Want with description</h2>
+    <div id="want-description"></div>
 
     <h2>Not wanted yet</h2>
     <div id="unpicked"></div>
@@ -50,8 +58,8 @@
     var pokemon_names = ['Bulbasaur', 'Ivysaur', 'Venusaur', 'Charmander', 'Charmeleon', 'Charizard', 'Squirtle', 'Wartortle', 'Blastoise', 'Caterpie', 'Metapod', 'Butterfree', 'Weedle', 'Kakuna', 'Beedrill', 'Pidgey', 'Pidgeotto', 'Pidgeot', 'Rattata', 'Raticate', 'Spearow', 'Fearow', 'Ekans', 'Arbok', 'Pikachu', 'Raichu', 'Sandshrew', 'Sandslash', 'Nidoran♀', 'Nidorina', 'Nidoqueen', 'Nidoran♂', 'Nidorino', 'Nidoking', 'Clefairy', 'Clefable', 'Vulpix', 'Ninetales', 'Jigglypuff', 'Wigglytuff', 'Zubat', 'Golbat', 'Oddish', 'Gloom', 'Vileplume', 'Paras', 'Parasect', 'Venonat', 'Venomoth', 'Diglett', 'Dugtrio', 'Meowth', 'Persian', 'Psyduck', 'Golduck', 'Mankey', 'Primeape', 'Growlithe', 'Arcanine', 'Poliwag', 'Poliwhirl', 'Poliwrath', 'Abra', 'Kadabra', 'Alakazam', 'Machop', 'Machoke', 'Machamp', 'Bellsprout', 'Weepinbell', 'Victreebel', 'Tentacool', 'Tentacruel', 'Geodude', 'Graveler', 'Golem', 'Ponyta', 'Rapidash', 'Slowpoke', 'Slowbro', 'Magnemite', 'Magneton', 'Farfetch’d', 'Doduo', 'Dodrio', 'Seel', 'Dewgong', 'Grimer', 'Muk', 'Shellder', 'Cloyster', 'Gastly', 'Haunter', 'Gengar', 'Onix', 'Drowzee', 'Hypno', 'Krabby', 'Kingler', 'Voltorb', 'Electrode', 'Exeggcute', 'Exeggutor', 'Cubone', 'Marowak', 'Hitmonlee', 'Hitmonchan', 'Lickitung', 'Koffing', 'Weezing', 'Rhyhorn', 'Rhydon', 'Chansey', 'Tangela', 'Kangaskhan', 'Horsea', 'Seadra', 'Goldeen', 'Seaking', 'Staryu', 'Starmie', 'Mr. Mime', 'Scyther', 'Jynx', 'Electabuzz', 'Magmar', 'Pinsir', 'Tauros', 'Magikarp', 'Gyarados', 'Lapras', 'Ditto', 'Eevee', 'Vaporeon', 'Jolteon', 'Flareon', 'Porygon', 'Omanyte', 'Omastar', 'Kabuto', 'Kabutops', 'Aerodactyl', 'Snorlax', 'Articuno', 'Zapdos', 'Moltres', 'Dratini', 'Dragonair', 'Dragonite', 'Mewtwo', 'Mew', 'Chikorita', 'Bayleef', 'Meganium', 'Cyndaquil', 'Quilava', 'Typhlosion', 'Totodile', 'Croconaw', 'Feraligatr', 'Sentret', 'Furret', 'Hoothoot', 'Noctowl', 'Ledyba', 'Ledian', 'Spinarak', 'Ariados', 'Crobat', 'Chinchou', 'Lanturn', 'Pichu', 'Cleffa', 'Igglybuff', 'Togepi', 'Togetic', 'Natu', 'Xatu', 'Mareep', 'Flaaffy', 'Ampharos', 'Bellossom', 'Marill', 'Azumarill', 'Sudowoodo', 'Politoed', 'Hoppip', 'Skiploom', 'Jumpluff', 'Aipom', 'Sunkern', 'Sunflora', 'Yanma', 'Wooper', 'Quagsire', 'Espeon', 'Umbreon', 'Murkrow', 'Slowking', 'Misdreavus', 'Unown', 'Wobbuffet', 'Girafarig', 'Pineco', 'Forretress', 'Dunsparce', 'Gligar', 'Steelix', 'Snubbull', 'Granbull', 'Qwilfish', 'Scizor', 'Shuckle', 'Heracross', 'Sneasel', 'Teddiursa', 'Ursaring', 'Slugma', 'Magcargo', 'Swinub', 'Piloswine', 'Corsola', 'Remoraid', 'Octillery', 'Delibird', 'Mantine', 'Skarmory', 'Houndour', 'Houndoom', 'Kingdra', 'Phanpy', 'Donphan', 'Porygon2', 'Stantler', 'Smeargle', 'Tyrogue', 'Hitmontop', 'Smoochum', 'Elekid', 'Magby', 'Miltank', 'Blissey', 'Raikou', 'Entei', 'Suicune', 'Larvitar', 'Pupitar', 'Tyranitar', 'Lugia', 'Ho-Oh', 'Celebi', 'Treecko', 'Grovyle', 'Sceptile', 'Torchic', 'Combusken', 'Blaziken', 'Mudkip', 'Marshtomp', 'Swampert', 'Poochyena', 'Mightyena', 'Zigzagoon', 'Linoone', 'Wurmple', 'Silcoon', 'Beautifly', 'Cascoon', 'Dustox', 'Lotad', 'Lombre', 'Ludicolo', 'Seedot', 'Nuzleaf', 'Shiftry', 'Taillow', 'Swellow', 'Wingull', 'Pelipper', 'Ralts', 'Kirlia', 'Gardevoir', 'Surskit', 'Masquerain', 'Shroomish', 'Breloom', 'Slakoth', 'Vigoroth', 'Slaking', 'Nincada', 'Ninjask', 'Shedinja', 'Whismur', 'Loudred', 'Exploud', 'Makuhita', 'Hariyama', 'Azurill', 'Nosepass', 'Skitty', 'Delcatty', 'Sableye', 'Mawile', 'Aron', 'Lairon', 'Aggron', 'Meditite', 'Medicham', 'Electrike', 'Manectric', 'Plusle', 'Minun', 'Volbeat', 'Illumise', 'Roselia', 'Gulpin', 'Swalot', 'Carvanha', 'Sharpedo', 'Wailmer', 'Wailord', 'Numel', 'Camerupt', 'Torkoal', 'Spoink', 'Grumpig', 'Spinda', 'Trapinch', 'Vibrava', 'Flygon', 'Cacnea', 'Cacturne', 'Swablu', 'Altaria', 'Zangoose', 'Seviper', 'Lunatone', 'Solrock', 'Barboach', 'Whiscash', 'Corphish', 'Crawdaunt', 'Baltoy', 'Claydol', 'Lileep', 'Cradily', 'Anorith', 'Armaldo', 'Feebas', 'Milotic', 'Castform', 'Kecleon', 'Shuppet', 'Banette', 'Duskull', 'Dusclops', 'Tropius', 'Chimecho', 'Absol', 'Wynaut', 'Snorunt', 'Glalie', 'Spheal', 'Sealeo', 'Walrein', 'Clamperl', 'Huntail', 'Gorebyss', 'Relicanth', 'Luvdisc', 'Bagon', 'Shelgon', 'Salamence', 'Beldum', 'Metang', 'Metagross', 'Regirock', 'Regice', 'Registeel', 'Latias', 'Latios', 'Kyogre', 'Groudon', 'Rayquaza', 'Jirachi', 'Deoxys', 'Turtwig', 'Grotle', 'Torterra', 'Chimchar', 'Monferno', 'Infernape', 'Piplup', 'Prinplup', 'Empoleon', 'Starly', 'Staravia', 'Staraptor', 'Bidoof', 'Bibarel', 'Kricketot', 'Kricketune', 'Shinx', 'Luxio', 'Luxray', 'Budew', 'Roserade', 'Cranidos', 'Rampardos', 'Shieldon', 'Bastiodon', 'Burmy', 'Wormadam', 'Mothim', 'Combee', 'Vespiquen', 'Pachirisu', 'Buizel', 'Floatzel', 'Cherubi', 'Cherrim', 'Shellos', 'Gastrodon', 'Ambipom', 'Drifloon', 'Drifblim', 'Buneary', 'Lopunny', 'Mismagius', 'Honchkrow', 'Glameow', 'Purugly', 'Chingling', 'Stunky', 'Skuntank', 'Bronzor', 'Bronzong', 'Bonsly', 'Mime Jr.', 'Happiny', 'Chatot', 'Spiritomb', 'Gible', 'Gabite', 'Garchomp', 'Munchlax', 'Riolu', 'Lucario', 'Hippopotas', 'Hippowdon', 'Skorupi', 'Drapion', 'Croagunk', 'Toxicroak', 'Carnivine', 'Finneon', 'Lumineon', 'Mantyke', 'Snover', 'Abomasnow', 'Weavile', 'Magnezone', 'Lickilicky', 'Rhyperior', 'Tangrowth', 'Electivire', 'Magmortar', 'Togekiss', 'Yanmega', 'Leafeon', 'Glaceon', 'Gliscor', 'Mamoswine', 'Porygon-Z', 'Gallade', 'Probopass', 'Dusknoir', 'Froslass', 'Rotom', 'Uxie', 'Mesprit', 'Azelf', 'Dialga', 'Palkia', 'Heatran', 'Regigigas', 'Giratina', 'Cresselia', 'Phione', 'Manaphy', 'Darkrai', 'Shaymin', 'Arceus', 'Victini', 'Snivy', 'Servine', 'Serperior', 'Tepig', 'Pignite', 'Emboar', 'Oshawott', 'Dewott', 'Samurott', 'Patrat', 'Watchog', 'Lillipup', 'Herdier', 'Stoutland', 'Purrloin', 'Liepard', 'Pansage', 'Simisage', 'Pansear', 'Simisear', 'Panpour', 'Simipour', 'Munna', 'Musharna', 'Pidove', 'Tranquill', 'Unfezant', 'Blitzle', 'Zebstrika', 'Roggenrola', 'Boldore', 'Gigalith', 'Woobat', 'Swoobat', 'Drilbur', 'Excadrill', 'Audino', 'Timburr', 'Gurdurr', 'Conkeldurr', 'Tympole', 'Palpitoad', 'Seismitoad', 'Throh', 'Sawk', 'Sewaddle', 'Swadloon', 'Leavanny', 'Venipede', 'Whirlipede', 'Scolipede', 'Cottonee', 'Whimsicott', 'Petilil', 'Lilligant', 'Basculin', 'Sandile', 'Krokorok', 'Krookodile', 'Darumaka', 'Darmanitan', 'Maractus', 'Dwebble', 'Crustle', 'Scraggy', 'Scrafty', 'Sigilyph', 'Yamask', 'Cofagrigus', 'Tirtouga', 'Carracosta', 'Archen', 'Archeops', 'Trubbish', 'Garbodor', 'Zorua', 'Zoroark', 'Minccino', 'Cinccino', 'Gothita', 'Gothorita', 'Gothitelle', 'Solosis', 'Duosion', 'Reuniclus', 'Ducklett', 'Swanna', 'Vanillite', 'Vanillish', 'Vanilluxe', 'Deerling', 'Sawsbuck', 'Emolga', 'Karrablast', 'Escavalier', 'Foongus', 'Amoonguss', 'Frillish', 'Jellicent', 'Alomomola', 'Joltik', 'Galvantula', 'Ferroseed', 'Ferrothorn', 'Klink', 'Klang', 'Klinklang', 'Tynamo', 'Eelektrik', 'Eelektross', 'Elgyem', 'Beheeyem', 'Litwick', 'Lampent', 'Chandelure', 'Axew', 'Fraxure', 'Haxorus', 'Cubchoo', 'Beartic', 'Cryogonal', 'Shelmet', 'Accelgor', 'Stunfisk', 'Mienfoo', 'Mienshao', 'Druddigon', 'Golett', 'Golurk', 'Pawniard', 'Bisharp', 'Bouffalant', 'Rufflet', 'Braviary', 'Vullaby', 'Mandibuzz', 'Heatmor', 'Durant', 'Deino', 'Zweilous', 'Hydreigon', 'Larvesta', 'Volcarona', 'Cobalion', 'Terrakion', 'Virizion', 'Tornadus', 'Thundurus', 'Reshiram', 'Zekrom', 'Landorus', 'Kyurem', 'Keldeo', 'Meloetta', 'Genesect', 'Chespin', 'Quilladin', 'Chesnaught', 'Fennekin', 'Braixen', 'Delphox', 'Froakie', 'Frogadier', 'Greninja', 'Bunnelby', 'Diggersby', 'Fletchling', 'Fletchinder', 'Talonflame', 'Scatterbug', 'Spewpa', 'Vivillon', 'Litleo', 'Pyroar', 'Flabébé', 'Floette', 'Florges', 'Skiddo', 'Gogoat', 'Pancham', 'Pangoro', 'Furfrou', 'Espurr', 'Meowstic', 'Honedge', 'Doublade', 'Aegislash', 'Spritzee', 'Aromatisse', 'Swirlix', 'Slurpuff', 'Inkay', 'Malamar', 'Binacle', 'Barbaracle', 'Skrelp', 'Dragalge', 'Clauncher', 'Clawitzer', 'Helioptile', 'Heliolisk', 'Tyrunt', 'Tyrantrum', 'Amaura', 'Aurorus', 'Sylveon', 'Hawlucha', 'Dedenne', 'Carbink', 'Goomy', 'Sliggoo', 'Goodra', 'Klefki', 'Phantump', 'Trevenant', 'Pumpkaboo', 'Gourgeist', 'Bergmite', 'Avalugg', 'Noibat', 'Noivern', 'Xerneas', 'Yveltal', 'Zygarde', 'Diancie', 'Hoopa', 'Volcanion', 'Rowlet', 'Dartrix', 'Decidueye', 'Litten', 'Torracat', 'Incineroar', 'Popplio', 'Brionne', 'Primarina', 'Pikipek', 'Trumbeak', 'Toucannon', 'Yungoos', 'Gumshoos', 'Grubbin', 'Charjabug', 'Vikavolt', 'Crabrawler', 'Crabominable', 'Oricorio', 'Cutiefly', 'Ribombee', 'Rockruff', 'Lycanroc', 'Wishiwashi', 'Mareanie', 'Toxapex', 'Mudbray', 'Mudsdale', 'Dewpider', 'Araquanid', 'Fomantis', 'Lurantis', 'Morelull', 'Shiinotic', 'Salandit', 'Salazzle', 'Stufful', 'Bewear', 'Bounsweet', 'Steenee', 'Tsareena', 'Comfey', 'Oranguru', 'Passimian', 'Wimpod', 'Golisopod', 'Sandygast', 'Palossand', 'Pyukumuku', 'Type: Null', 'Silvally', 'Minior', 'Komala', 'Turtonator', 'Togedemaru', 'Mimikyu', 'Bruxish', 'Drampa', 'Dhelmise', 'Jangmo-o', 'Hakamo-o', 'Kommo-o', 'Tapu Koko', 'Tapu Lele', 'Tapu Bulu', 'Tapu Fini', 'Cosmog', 'Cosmoem', 'Solgaleo', 'Lunala', 'Nihilego', 'Buzzwole', 'Pheromosa', 'Xurkitree', 'Celesteela', 'Kartana', 'Guzzlord', 'Necrozma', 'Magearna', 'Marshadow', 'Poipole', 'Naganadel', 'Stakataka', 'Blacephalon', 'Zeraora', 'Meltan', 'Melmetal'];
 
     var want = [
-    94, "",
-    727, "",
+    727, "[Intimidate, Fake Out]",
+    94, "[Trapper]",
     115, "if no gengar",
     645, "if no incineroar",
     143, "likes Cresselia",
@@ -62,14 +70,40 @@
     798, "If others picked kangaskhan or snorlax. Likes incineroar and tapu fini",
     591, "Helps tapu fini and really synergyzes with Mega tyranitar.\nLikes trickroom setters Stakataka and cressella.\nTapu lele is best tapu partner since allows sleep",
     145, "Helps tapu bulu and mega tyranitar",
+    151, "[Fake Out, Tailwind] Get if no Incineroar or Zapados. Helps Kartana and other attackers. Likes Incineroar, volcanion, and Landorus for taking down steels. Hates Tapu Fini",
+    787, "Dislikes grass/bug and fire so volcanion is perfect teammate. likes incineroar",
+    721, "Best friend: Tapu bulu (b/c great synergy)\nLikes zapados (speed control), stalaka (trickroom).\nLandorus and metagross counter electric, ground, and rock types.\nAlso likes tapu koko",
     248, "Really needs Amoongus redirection.\nLikes Tapu fini b/c takes out landorus\nLikes zapados's tailwind\nLikes tapu bulu for taking out ground and volcanion or heatran for taking out scizor.",
     212, "Pick if tyranitar not picked. Basically likes everything tyranitar likes",
-    787, "Dislikes grass/bug and fire so volcanion is perfect teammate. likes incineroar",
-    721, "Best friend: Tapu bulu (b/c great synergy)\nLikes zapados (speed control), stalaka (trickroom).\nLandorus and metagross counter electric, ground, and rock types.\nAlso likes tapu koko"
+    373, "If no zapados (for tailwind) and need a good mega. Works well with island guardians and aegislash",
+    786, "If no other island guardians. Needs pokemon that break steel: Landorus, Heatran, Charizard. Zapados and Mega Salamence help with tailwind",
+    233, "[Trick Room Setter] Likes Amoongus and Incineroar for setting Trick Room. Really likes Amoongus. Likes Trick room abusers like Stakataka, Camerupt, and Tapu Bulu",
+    576, "[Trick Room Setter, Trapper] Traps pokemon so good partners have intimidate (Incineroar, Landorus). Scizor, Tapu Fini, and Azumaril are good teammates.",
+    719, "[Trick Room Setter] setter if anyone grabs common trick room counters like Tyranitar, Scrafty, or Incineroar. Although Diance is not as good as Hoopa-U, Gothitelle, or Stakataka",
+    681, "Likes Tapu Fini and Tapu Bulu to cover weaknesses. Wide guard helps Charizard and Zapados",
+    560, "[Intimidate, Fake Out] If no Incineroar. Likes Metagross, Aegislash, Charizard, and Volcanion for defensive synergy",
+    423, "Get if no Tapu Fini. Counters Incineroar, Landorus, Metagross, Tapu Koko, and Magnectric. Likes Diance's trick room, and Camerupt. Helps Zapados, Salamence, Incineroar, and Volcorona.",
+    637, "Araquanid is best friend since has wide guard and is water. Likes Tapu Koko and Kartana to take care of water types. Intimidate users (Landorus, Incineroar) help it survive",
+    488, "[Trick Room Setter] Likes Tyranitar, Volcanion, and Tapu Bulu. Takes out Landorus and Salamence. Hates Incineroar and Zapados",
+    752, "Slow. Metagross, Tapu Bulu, Kartana, and Volcarona benefit from Wide guard. Likes Landorus",
+    784, "[Setup] Hates Tapu Fini so likes any other Tapu. Likes Incineroar for setup. Zapados helps take out Tapu Fini and uses Tailwind",
+    485, "If couldn't get Volcanion",
+    282, "[Trick Room Setter, Abuser] Likes Intimidate + Fake Out support (Incineroar, Scrafty). Likes Amoongus, Tapu Fini, and Tapu Bulu",
+    807, "[Fake Out] Landorus is best friend. Hates grass so Incineroar is also good. Tapu Fini is also a good partner but is passive.",
+    323, "If got a trick room user already",
+    641, "[Tailwind] Counters intimidate users. Likes Tapu Fini and Tapu Lele. Helps Landorus and Tyranitar since counters intimidate and sets up Tailwind",
+    598, "Likes Landorus since hates Incineroar, Charizard, and Volcanion. Counters Tapus and Tyranitar. Also likes Tapu Fini, Volcanion, Milotic, and Rotom-W",
+    797, "Likes Tyranitar and water types. Get if others take Metagross, Ferrothorn, and Tapu Lele.",
+    494, "Likes Metagross. Great synergy with Tapu Fini",
+    437, "[Trick Room Setter, Abuser] Needs Tapu Bulu (alternative: Tapu Lele but fast so not as good). If no Tapu Bulu, just get Stakataka. Likes Incineroar or Scrafty. Goes well with Hoopa-U. Landorus and water types are also good partners.",
+    720, "[Trick Room Setter] Secondary Trick Room setter (likes Diance). Hates dark types so Landorus-T, Scrafty, Tapu Fini, and Mega Camerupt are good partners.",
+    805, "[Trick Room Setter, Abuser] Secondary Trick Room setter. Likes Hoopa-U, Incineroar, Scrafty, Landorus, and Salamence",
+    245, "[Tailwind] If no other tailwind user",
+    350, "Counters Incineroar, Landorus, and Salamence. Helps Tapu Bulu, Incineroar, and Landorus but hates Tapu Fini",
+    3, "[Trick Room Abuser] Tank, slowly drains apponents. Likes Aegislash and Heatran to remove Tapu Lele and Salamence",
     ]
-    // want.sort(function(a, b){return a - b});
 
-    var nwy = [3, 38, 59, 65, 80, 89, 105, 113, 127, 130, 132, 142, 149, 186, 176, 184, 214, 227, 229, 230, 233, 235, 242, 248, 257, 260, 272, 279, 282, 302, 303, 308, 310, 323, 324, 350, 356, 373, 398, 423, 424, 426, 437, 445, 448, 460, 461, 462, 468, 472, 473, 474, 475, 479, 497, 526, 530, 534, 547, 545, 553, 560, 576, 579, 584, 598, 609, 620, 625, 635, 637, 658, 663, 681, 683, 700, 707, 738, 752, 754, 758, 777, 778, 781, 784, 151, 245, 380, 485, 488, 494, 641, 719, 720, 786, 797, 798, 805, 806, 807];
+    var nwy = [38, 59, 65, 80, 89, 105, 113, 127, 130, 132, 142, 149, 186, 176, 184, 214, 227, 229, 230, 235, 242, 257, 260, 272, 279, 302, 303, 308, 310, 323, 324, 356, 398, 424, 426, 445, 448, 460, 461, 462, 468, 472, 473, 474, 475, 479, 497, 526, 530, 534, 547, 545, 553, 579, 584, 609, 620, 625, 635, 658, 663, 683, 700, 707, 738, 754, 758, 777, 778, 781, 380, 720, 806];
 
     function makeDOM_div_pokemon(pokemon_id, pokemon_name, note) {
         var a   = document.createElement("a");
@@ -99,17 +133,23 @@
         return s.substr(s.length-size);
     }
 
-    function makeDom_div_pokemon_icon(pokemon_id) {
-        var div = document.createElement("div");
-        var img = document.createElement("img");
-        var p   = document.createElement("p");
-        div.appendChild(img);
-        div.appendChild(p);
-        pokemon_id = pad(pokemon_id, 3);
-        img.src = "https://www.serebii.net/pokedex-sm/icon/" + pokemon_id + ".png";
-        p.innerHTML = pokemon_id;
-        div.classList.add("pokemon-icon");
-        return div;
+    function makeDOM_div_pokemon_with_description(pokemon_id, pokemon_name, note) {
+        var div1 = document.createElement("div");
+        var div2 = document.createElement("div");
+        var div3 = document.createElement("div");
+        var dom_a_pokemon = makeDOM_div_pokemon(pokemon_id, pokemon_name, note);
+        var p = document.createElement("p");
+        div1.appendChild(div2);
+        div1.appendChild(div3);
+        div2.appendChild(dom_a_pokemon);
+        div3.appendChild(p);
+        div1.classList.add("pokemon-with-description");
+        if (note === "") {
+            note = "No description.";
+        }
+        p.innerHTML = note;
+        p.classList.add("note");
+        return div1;
     }
 
     want_div = document.getElementById("want");
@@ -117,6 +157,12 @@
         var pokemon_id = want[i];
         var note = want[i+1];
         want_div.appendChild(makeDOM_div_pokemon(pokemon_id, pokemon_names[pokemon_id-1], note));
+    }
+    want_description_div = document.getElementById("want-description");
+    for (var i = 0; i < want.length; i=i+2) {
+        var pokemon_id = want[i];
+        var note = want[i+1];
+        want_description_div.appendChild(makeDOM_div_pokemon_with_description(pokemon_id, pokemon_names[pokemon_id-1], note));
     }
     nwy_div = document.getElementById("unpicked");
     for (var i = 0; i < nwy.length; i++) {
