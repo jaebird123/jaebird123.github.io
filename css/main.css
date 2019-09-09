@@ -22,6 +22,11 @@
   padding-top: 10px;
  }
 
+ a.pokemasters-link {
+    font-size: 6px;
+    float: right;
+ }
+
 /* Toggle Styles */
 
 #wrapper {
