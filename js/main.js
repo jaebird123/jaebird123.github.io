@@ -44,7 +44,6 @@ function smoothScroll(e) {
   /* set top nav text */
   setTopNavText($(this), {
     'about': ['> ./analyzeJesse', '> found about_me.txt'],
-    'research': ['> searching...', '> reasearching...'],
     'library': ['> don\'t read the book', '> learn formulas'],
     'contact-info': ['> hmu']
   });

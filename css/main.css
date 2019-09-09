@@ -417,9 +417,19 @@
     background-color: #16a085 !important;
 }
 
+.timeline-badge.lime-green {
+    background-color: #badc58 !important;
+    color: #444 !important;
+}
+
 .timeline-title {
     margin-top: 0;
+    margin-bottom: 5px;
     color: inherit;
+}
+
+.timeline-subtitle {
+    margin-bottom: 5px;
 }
 
 .timeline-body > p,
@@ -496,4 +506,8 @@
         position: relative;
         margin-right: 0;
     }
+}
+
+p.formula-links {
+    margin-bottom: 3px;
 }
