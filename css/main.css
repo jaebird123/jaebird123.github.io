@@ -8,6 +8,12 @@
     overflow-x: hidden;
  }
 
+ iframe {
+    width: auto;
+    height: auto;
+    padding: 5px;
+ }
+
  #jesse {
     width: 200px;
     margin-bottom: 15px;
