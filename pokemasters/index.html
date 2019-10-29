@@ -115,6 +115,8 @@
     <h2>Links</h2>
     <ul>
         <li><a href="draft.html">Season 4 Draft</a> - Inital draft for Season 4 of Pokemasters taking place on Saturday, 2019/10/26</li>
+        <li><a href="https://www.smogon.com/dex/sm/formats/doubles/" target="_blank">Smogon Doubles OU Format</a> - Default battle rules we go by with the exception of our own battle clauses</li>
+        <li><a href="https://www.smogon.com/forums/threads/usum-doubles-ou-viability-rankings.3623347/" target="_blank">Smogon Doubles OU Viability Rankings</a> - Reference for what is currently considered viable as of 2019/10/22</li>
     </ul>
 
     <h2>Rules</h2>
@@ -136,12 +138,12 @@
     <ol>
         <li>Each player chooses a team of 6 pokemon to use the entire tournament.</li>
         <li>Each player plays all other players exactly once.</li>
-        <li>The player who won the most battles wins the tournament. If two players are tied for the most wins, the player who won the battle between those two players wins the tournament. If more than two players are tied with the most wins, all other players are eliminated and the remaining players repeat steps 2 and 3.</li>
+        <li>The player who won the most battles wins the tournament. If two or more players are tied with the most wins, all other players are eliminated and the remaining players repeat steps 2 and 3.</li>
     </ol>
     <h4>Season rules</h4>
-    <p>Players play 5 tournaments. Two players advance to the playoffs. The player with the most tournament wins advances as the home team. From the remaining players, the player with the most total battle wins in all tournaments advances as the away team.</p>
+    <p>Players play 5 tournaments. All players advance to the playoffs. Players are ranked by tournament wins and then number of matches if tied. If still tied, play single matches to determine an order.</p>
     <h4>Playoff rules</h4>
-    <p>The two players play best 2 out of 3 battles. Players can use different pokemon for each battle. The player who wins, wins the season and picks their MVP (Most Valuable Pokemon) for the season.</p>
+    <p>Players can use different pokemon for each battle. The bottom two players play a best 2 out of 3 and the winner advances. That player plays the next worse player in a best 2 out of 3 and this continues until the championship. The championship is a best 3 out of 5. The champion wins the season and picks their MVP (Most Valuable Pokemon) for the season.</p>
 
     <div>
         <h2>Tournaments</h2>
@@ -368,7 +370,9 @@
                 n_wins[match[0]] += 1;
             }
             winner_index = index_of_max(n_wins);
-            row_classes[winner_index] = row_classes[winner_index] + ' winner';
+            if (winner_index !== -1) {
+                row_classes[winner_index] = row_classes[winner_index] + ' winner';
+            }
 
             // Make a row for each player in the table
             tbody.appendChild(header_row);
@@ -541,10 +545,16 @@
     }
 
     function index_of_max(arr) {
+        /* Return -1 if multiple maxes */
         imax = 0;
         for (var i = 1; i < arr.length; i++) {
             if (arr[i] > arr[imax]) {
                 imax = i;
+            }
+        }
+        for (var i = 0; i < arr.length; i++) {
+            if ((arr[i] == arr[imax]) && (i != imax)) {
+                return -1;
             }
         }
         return imax;
