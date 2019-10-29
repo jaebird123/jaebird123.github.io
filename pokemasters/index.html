@@ -71,10 +71,13 @@
     }
     .pokemon-large {
         display: inline-block;
+        border: 3px solid #444;
+        border-radius: 10px;
+        margin: 5px;
     }
     .pokemon-img {
         border-radius: 50%;
-        width: 100px;
+        width: 125px;
     }
     .pokemon-large > p {
         text-align: center;
@@ -106,6 +109,18 @@
     }
     a:hover .pokemon-img.james {
         background: radial-gradient(#74b9ff 50%, #ecf0f1 70%);
+    }
+    .pokemon-large.kamon {
+        border-color: #e74c3c;
+    }
+    .pokemon-large.jbird {
+        border-color: #f1c40f;
+    }
+    .pokemon-large.steve {
+        border-color: #9b59b6;
+    }
+    .pokemon-large.james {
+        border-color: #74b9ff;
     }
 </style></head>
 
@@ -307,7 +322,7 @@
         return s.substr(s.length-size);
     }
 
-    function setPokemon(player_pokemon_div, pokemon_numbers, classes, pokemon_names, pokemon_n_used) {
+    function setPokemon(player_pokemon_div, pokemon_numbers, classes, pokemon_names, pokemon_n_used, player_class) {
 
         /* Sort by pokemon number then sort by number of times used */
         idx = argsort(pokemon_numbers).reverse();
@@ -333,6 +348,7 @@
             a.href = "https://www.smogon.com/dex/sm/pokemon/" + pokemon_name;
             a.target = "_blank";
             div.classList.add("pokemon-large");
+            div.classList.add(player_class);
             img.src = "https://www.serebii.net/pokemon/art/" + pad(pokemon_numbers[i], 3) + ".png";
             for (var j = 0; j < classes.length; j++) {
                 img.classList.add(classes[j]);
@@ -614,7 +630,7 @@
     for (var i = 0; i < player_pokemon.length; i++) {
         var pokemon_n_used = calculate_n_used(player_pokemon[i]);
         var player_pokemon_div = document.getElementById(player_class[i] + "-pokemon");
-        setPokemon(player_pokemon_div, player_pokemon[i], ["pokemon-img", player_class[i]], pokemon_names, pokemon_n_used);
+        setPokemon(player_pokemon_div, player_pokemon[i], ["pokemon-img", player_class[i]], pokemon_names, pokemon_n_used, player_class[i]);
     }
 
     setDrafts(drafts, player_names, player_class);
