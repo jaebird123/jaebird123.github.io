@@ -408,27 +408,34 @@
     background-color: #5bc0de !important;
 }
 
-.timeline-badge.purple {
-  background-color: #9C27B0 !important;
+.timeline-badge.hb {
+  background-color: #800080 !important;
 }
 
-.timeline-badge.brown {
-  background-color: #795548 !important;
+.timeline-badge.tufts {
+  /*background-color: #81613E !important;*/
+  background-color: #3E8EDE !important;
+  font-family: Gotham;
+  font-size: 28px !important;
+  /*border: 5px solid #81613E !important;*/
+  /*color: #3E8EDE !important;*/
+  /*color: #81613E !important;*/
+  /*font-weight: bold;*/
 }
 
-.timeline-badge.blue {
+.timeline-badge.mitre {
   background-color: #3F51B5 !important;
 }
 
-.timeline-badge.red {
+.timeline-badge.cmu {
   background-color: #D32F2F !important;
 }
 
-.timeline-badge.turquoise {
+.timeline-badge.qeexo {
     background-color: #16a085 !important;
 }
 
-.timeline-badge.lime-green {
+.timeline-badge.freenome {
     background-color: #badc58 !important;
     color: #444 !important;
 }
