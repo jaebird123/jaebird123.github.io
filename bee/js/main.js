@@ -12,6 +12,14 @@ $( document ).ready(function() {
   draw_header(ctx, v[0], v[1], "of Bird and Bee", h, w);
   draw_main_text(ctx, h, w);
 
+  // position mocha
+  var mocha = $("#mocha");
+  print(mocha)
+  mocha.css({
+    left: w/2 - mocha.width()/2 - 250 + 'px',
+    bottom: 25 + 'px'
+  });
+
   // position bee
   var bee = $("#bee");
   print(bee)
@@ -20,11 +28,27 @@ $( document ).ready(function() {
     bottom: 25 + 'px'
   });
 
+  // position th
+  var th = $("#th");
+  print(th)
+  th.css({
+    left: w/2 - th.width()/2 + 17 + 'px',
+    bottom: 110 + 'px'
+  });
+
   // position bird
   var bird = $("#bird");
   print(bird)
   bird.css({
     left: w/2 - bird.width()/2 + 50 + 'px',
+    bottom: 25 + 'px'
+  });
+
+  // position pp
+  var pp = $("#pp");
+  print(pp)
+  pp.css({
+    left: w/2 - pp.width()/2 + 250 + 'px',
     bottom: 25 + 'px'
   });
 });
