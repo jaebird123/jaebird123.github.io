@@ -9,48 +9,8 @@ $( document ).ready(function() {
   
   draw_color_grad(ctx, h, w);
   var v = get_years_and_days_since();
-  draw_header(ctx, v[0], v[1], "of Bird and Bee", h, w);
-  draw_main_text(ctx, h, w);
-
-  // position mocha
-  var mocha = $("#mocha");
-  print(mocha)
-  mocha.css({
-    left: w/2 - mocha.width()/2 - 250 + 'px',
-    bottom: 25 + 'px'
-  });
-
-  // position bee
-  var bee = $("#bee");
-  print(bee)
-  bee.css({
-    left: w/2 - bee.width()/2 - 50 + 'px',
-    bottom: 25 + 'px'
-  });
-
-  // position th
-  var th = $("#th");
-  print(th)
-  th.css({
-    left: w/2 - th.width()/2 + 17 + 'px',
-    bottom: 110 + 'px'
-  });
-
-  // position bird
-  var bird = $("#bird");
-  print(bird)
-  bird.css({
-    left: w/2 - bird.width()/2 + 50 + 'px',
-    bottom: 25 + 'px'
-  });
-
-  // position pp
-  var pp = $("#pp");
-  print(pp)
-  pp.css({
-    left: w/2 - pp.width()/2 + 250 + 'px',
-    bottom: 25 + 'px'
-  });
+  set_number_of_years(v[0]);
+  set_number_of_days(v[1]);
 });
 
 function draw_color_grad(ctx, h, w) {
@@ -61,54 +21,20 @@ function draw_color_grad(ctx, h, w) {
   ctx.fillRect(0, 0, w, h);
 }
 
-function draw_header(ctx, numYears, numDays, s3, h, w) {
-  s1 = numYears.toString() + " Year"
-  if (numYears != 1) {
-    s1 += "s"
+function set_number_of_years(n_years) {
+  s = n_years.toString() + " Year"
+  if (n_years != 1) {
+    s += "s"
   }
-  s2 = numDays.toString() + " day"
-  if (numDays != 1) {
-    s2 += "s"
-  }
-  var x = w / 2;
-  var y1 = 75;
-  var y2 = 110;
-  var y3 = 150;
-  ctx.font = "50px Verdana";
-  ctx.textAlign = 'center';
-  ctx.fillStyle = 'white';
-  ctx.fillText(s1, x, y1);
-  ctx.font = "20px Verdana";
-  ctx.fillText(s2, x, y2);
-  ctx.font = "25px Verdana";
-  ctx.fillText(s3, x, y3);
+  document.getElementById("years-of-dating").innerHTML = s;
 }
 
-function draw_main_text(ctx, h, w) {
-  var x = w / 2;
-  var maxW = w - 100;
-  var lineHeight = 42;
-  var y = 200;
-  ctx.font = "20px Verdana";
-  ctx.textAlign = 'center';
-  ctx.fillStyle = 'black';
-  msg = "Time flies. Whether wasted or spent, you can always keep track of it here. I am so proud of the woman you have become. Your bird will always love you."
-  var words = msg.split(' ');
-  var line = '';
-  for (var n = 0; n < words.length; n++) {
-    var testLine = line + words[n] + ' ';
-    var metrics = ctx.measureText(testLine);
-    var testWidth = metrics.width;
-    if (testWidth > maxW && n > 0) {
-      ctx.fillText(line, x, y);
-      line = words[n] + ' ';
-      y += lineHeight;
-    }
-    else {
-      line = testLine;
-    }
+function set_number_of_days(n_days) {
+  s = n_days.toString() + " day"
+  if (n_days != 1) {
+    s += "s"
   }
-  ctx.fillText(line, x, y);
+  document.getElementById("days-of-dating").innerHTML = s;
 }
 
 function get_years_and_days_since() {
