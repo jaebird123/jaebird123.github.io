@@ -368,6 +368,7 @@
             border-top-left-radius: 50%;
             border-bottom-right-radius: 50%;
             border-bottom-left-radius: 50%;
+            border: 1px solid #eee;
         }
 
         .timeline > li.timeline-inverted > .timeline-panel {
@@ -438,6 +439,11 @@
 .timeline-badge.freenome {
     background-color: #badc58 !important;
     color: #444 !important;
+}
+
+.timeline-badge.meta {
+    background-color: #ecf0f1 !important;
+    color: #0081FB !important;
 }
 
 .timeline-title {
